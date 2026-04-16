@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 港澳盛夏之旅 | 旅遊手冊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .tab-active { border-bottom: 4px solid #3b82f6; color: #3b82f6; font-weight: bold; }
+        .timeline-line::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background: #e2e8f0; }
+    </style>
+</head>
+<body class="pb-20">
+
+    <header class="bg-blue-600 text-white py-10 px-6 text-center shadow-lg">
+        <h1 class="text-3xl font-bold">2026 港澳盛夏之旅</h1>
+        <p class="mt-2 opacity-80">個人專屬互動行程表</p>
+    </header>
+
+    <nav class="sticky top-0 bg-white shadow-md z-50 flex justify-around">
+        <button onclick="showDay(1)" id="tab1" class="py-4 px-6 tab-active">08.28 Day 1</button>
+        <button onclick="showDay(2)" id="tab2" class="py-4 px-6 text-gray-500">08.29 Day 2</button>
+        <button onclick="showDay(3)" id="tab3" class="py-4 px-6 text-gray-500">08.30 Day 3</button>
+    </nav>
+
+    <main class="max-w-md mx-auto mt-6 px-4">
+        
+        <div id="weather-box" class="bg-gradient-to-r from-blue-400 to-blue-500 rounded-xl p-4 text-white shadow-md mb-6 flex items-center justify-between">
+            <div>
+                <p class="text-sm opacity-90">2026.08.28 預測天氣</p>
+                <h3 class="text-2xl font-bold">32°C 晴時多雲</h3>
+            </div>
+            <i data-lucide="sun-cloud" class="w-12 h-12"></i>
+        </div>
+
+        <section id="day1" class="day-content">
+            <div class="mb-6 bg-white p-4 rounded-xl shadow-sm">
+                <h4 class="font-bold mb-2 flex items-center"><i data-lucide="pie-chart" class="mr-2 w-5 h-5 text-blue-500"></i>交通比例預估</h4>
+                <canvas id="chartDay1" height="150"></canvas>
+            </div>
+
+            <div class="relative timeline-line pl-10 space-y-8">
+                <div class="relative">
+                    <div class="absolute -left-[33px] bg-blue-500 rounded-full w-8 h-8 flex items-center justify-center text-white border-4 border-white">
+                        <i data-lucide="bus" class="w-4 h-4"></i>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <span class="text-xs font-bold text-blue-600">14:30 - 16:30</span>
+                        <h3 class="font-bold text-lg">東薈城名店倉 (COACH)</h3>
+                        <p class="text-sm text-gray-600 mt-1">機場搭 S1 巴士直達。費用 HK$3.7。</p>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="absolute -left-[33px] bg-green-500 rounded-full w-8 h-8 flex items-center justify-center text-white border-4 border-white">
+                        <i data-lucide="hotel" class="w-4 h-4"></i>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <span class="text-xs font-bold text-green-600">16:30 - 18:00</span>
+                        <h3 class="font-bold text-lg">旭逸酒店 荃灣</h3>
+                        <p class="text-sm text-gray-600 mt-1">搭 E31/E32 至葵興站轉接駁車。費用 HK$11.2。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="day2" class="day-content hidden text-center py-20">
+            <i data-lucide="ship" class="w-12 h-12 mx-auto text-blue-300"></i>
+            <p class="mt-4">Day 2 港澳跨海行程載入中...</p>
+        </section>
+        <section id="day3" class="day-content hidden text-center py-20">
+            <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto text-blue-300"></i>
+            <p class="mt-4">Day 3 官也街伴手禮與回程...</p>
+        </section>
+
+    </main>
+
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-3 flex justify-around items-center shadow-inner">
+        <div class="text-xs text-center"><i data-lucide="info" class="mx-auto text-blue-500"></i><span>必讀叮嚀</span></div>
+        <div class="text-xs text-center"><i data-lucide="credit-card" class="mx-auto text-blue-500"></i><span>八達通/澳門通</span></div>
+        <div class="text-xs text-center"><i data-lucide="map-pin" class="mx-auto text-blue-500"></i><span>離線地圖</span></div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function showDay(day) {
+            document.querySelectorAll('.day-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('day' + day).classList.remove('hidden');
+            
+            document.querySelectorAll('nav button').forEach(btn => btn.className = 'py-4 px-6 text-gray-500');
+            document.getElementById('tab' + day).className = 'py-4 px-6 tab-active';
+            
+            const weather = [
+                { temp: '32°C 晴時多雲', date: '2026.08.28' },
+                { temp: '31°C 局部短暫雨', date: '2026.08.29' },
+                { temp: '30°C 多雲', date: '2026.08.30' }
+            ];
+            document.querySelector('#weather-box h3').innerText = weather[day-1].temp;
+            document.querySelector('#weather-box p').innerText = weather[day-1].date + ' 預測天氣';
+        }
+
+        // Chart.js 範例
+        const ctx1 = document.getElementById('chartDay1').getContext('2d');
+        new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                labels: ['步行', '大眾運輸', '美食休閒'],
+                datasets: [{
+                    data: [30, 40, 30],
+                    backgroundColor: ['#fbbf24', '#3b82f6', '#f87171']
+                }]
+            },
+            options: { plugins: { legend: { position: 'right' } } }
+        });
+    </script>
+</body>
+</html>
